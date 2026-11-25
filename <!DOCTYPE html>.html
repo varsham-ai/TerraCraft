@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TerraCraft | Small changes, greener futures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=League+Spartan:wght@500;600;700;800&family=Permanent+Marker&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#064b24;--deep:#033b1c;--cream:#fff1e3;--peach:#f5d0b0;--orange:#ffad70;--mint:#e5ffea;--brown:#81564b;--ink:#181512;--yellow:#ffd21c;--pink:#f3d3e2;--coral:#ff777c;--salmon:#f7a1a3;--tan:#e9b4a2;--line:#171512;--shadow:0 4px 0 #8b7768}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#e8e2d8;color:var(--ink);font-family:'Space Grotesk',sans-serif}
+button,input{font:inherit}
+button,a{cursor:pointer}
+a{color:inherit}
+.site-header{height:44px;background:var(--forest);border:2px solid #101010;display:flex;align-items:center;gap:clamp(8px,1.4vw,24px);padding:3px 8px;color:#fff1db;position:sticky;top:0;z-index:20}
+.logo{height:31px;min-width:78px;padding:3px 7px;background:#f5ead9;border:1px solid #c8b8a0;color:#17472b;display:flex;align-items:center;gap:4px;font-family:'DM Serif Display',serif;font-size:14px}
+.logo-mark{font-size:22px}
+.nav{display:flex;align-items:center;justify-content:space-around;gap:clamp(8px,2vw,32px);flex:1}
+.nav a{text-decoration:none;color:#fff0d8;font-family:'DM Serif Display',serif;font-weight:bold;font-size:clamp(10px,.82vw,14px);white-space:nowrap}
+.nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.search-wrap{position:relative;flex:0 1 135px;min-width:85px}
+.search-wrap input{width:100%;height:23px;border-radius:20px;border:1px solid #111;background:#f9ead8;padding:2px 24px 2px 9px;font-size:10px;color:#1b1b1b}
+.search-wrap button{position:absolute;right:3px;top:2px;border:0;background:transparent;font-size:14px}
+.icon-btn{border:0;background:transparent;color:#fff3df;font-size:19px;padding:1px}
+.user-menu{position:relative;display:flex;align-items:center;gap:5px;font-size:11px;font-weight:bold;line-height:1.05}
+.avatar{background:#111;border:1px solid #ddd;border-radius:50%;width:25px;height:25px;display:grid;place-items:center;font-size:17px}
+.user-menu>button{display:flex;align-items:center;gap:4px;color:white;border:0;background:transparent;font-weight:bold}
+.dropdown{display:none;position:absolute;right:0;top:32px;width:180px;background:var(--cream);color:var(--ink);border:2px solid var(--line);box-shadow:var(--shadow);z-index:30}
+.dropdown.open{display:block}
+.dropdown a{display:block;padding:10px 12px;text-decoration:none;border-bottom:1px solid #d4bba7;font-size:13px}
+.dropdown a:hover{background:var(--peach)}
+.page{display:none;margin:0 auto;max-width:1600px;border-left:2px solid var(--line);border-right:2px solid var(--line);border-bottom:2px solid var(--line);background:var(--cream);min-height:calc(100vh - 44px)}
+.page.active{display:block}
+.home-grid{display:grid;grid-template-columns:minmax(0,3fr) minmax(180px,1fr);grid-template-rows:minmax(240px,31vw) auto;gap:3px;background:var(--line)}
+.hero{position:relative;background:#234d2b;min-height:240px;overflow:hidden;display:grid;place-items:center}
+.hero img{position:absolute;width:100%;height:100%;object-fit:cover;inset:0}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0005,transparent 80%)}
+.hero h1{position:relative;z-index:1;color:white;font-family:'League Spartan',sans-serif;font-weight:800;font-size:clamp(42px,6.3vw,105px);letter-spacing:-.04em;text-shadow:0 3px 5px #30251b;white-space:nowrap;margin:0}
+.updates-panel{background:var(--cream);position:relative;padding:18px 14px;overflow:hidden}
+.updates-label{font-family:'Permanent Marker',cursive;background:var(--yellow);color:#79501a;display:inline-block;padding:9px 20px;transform:skew(-15deg);border:2px solid #c98921;box-shadow:4px 4px #e4a13d;font-size:18px}
+.updates-panel ul{padding-left:20px;line-height:1.6;font-size:14px;color:#87450d;font-weight:700}
+.geo-shape{position:absolute;width:115px;height:115px;background:#ffc900;right:-70px;bottom:-14px;transform:rotate(45deg)}
+.home-lower{grid-column:1;display:grid;grid-template-columns:1fr 1fr;gap:3px;background:var(--line)}
+.content-strip{background:var(--peach);padding:10px 8px 14px;min-width:0}
+.content-strip.tutorials{background:#f8d6ba}
+.view-more{display:inline-block;background:#8e6148;color:#fff0d9;border-radius:0 18px 0 0;padding:3px 13px;font-size:10px;text-decoration:underline}
+.section-pill{display:block;background:var(--orange);border-radius:0 24px 24px 0;width:50%;min-width:120px;padding:4px 10px;font-family:'League Spartan',sans-serif;font-weight:700;letter-spacing:.06em;font-size:15px;margin:0 0 9px -8px}
+.cards3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.mini-card{height:clamp(95px,12vw,145px);border:1px solid #d28e54;border-radius:18px;background:#fff1e3;box-shadow:var(--shadow);overflow:hidden}
+.mini-card img{width:100%;height:58%;object-fit:cover;display:block}
+.mini-card h3{font-family:'DM Serif Display',serif;font-size:13px;margin:6px 7px 2px;color:#684638}
+.mini-card a{font-size:10px;margin:0 7px;color:#704b38}
+.quote-panel{background:var(--mint);padding:16px 15px;text-align:center;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.quote-panel .eyebrow{font-family:'DM Serif Display',serif;letter-spacing:.15em;font-size:12px}
+.quote-panel blockquote{font-family:'DM Serif Display',serif;font-size:clamp(20px,2vw,31px);line-height:1.24;margin:12px 0;max-width:240px}
+.quote-hills{height:38px;position:absolute;bottom:0;left:0;right:0;background:#2b7650;clip-path:polygon(0 72%,35% 100%,63% 38%,100% 0,100% 100%,0 100%)}
+.problem-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:190px minmax(205px,auto) minmax(165px,auto);gap:3px;background:var(--line);align-items:stretch}
+.problem-banner{grid-column:2/4;grid-row:1;position:relative;overflow:hidden;display:grid;place-items:center}
+.problem-banner img{width:100%;height:100%;object-fit:cover;position:absolute}
+.problem-banner:after{content:"";position:absolute;inset:0;background:#0004}
+.problem-banner h1,.initiative-hero h1,.tutorial-hero h1{position:relative;z-index:1;color:white;font-family:'League Spartan',sans-serif;font-size:clamp(35px,4vw,65px);margin:0;text-shadow:0 2px 5px #222}
+.problem-info{padding:16px;background:var(--cream);position:relative;overflow:hidden;font-size:clamp(12px,.9vw,14px);line-height:1.45;min-width:0;overflow-wrap:anywhere}
+.problem-info h2,.programs h2,.tutorial-side h2,.more-panel h2{font-family:'Permanent Marker',cursive;font-size:25px;line-height:1;margin:0 0 12px;text-decoration:underline;text-decoration-thickness:2px}
+.problem-info p{margin:4px 0}
+.problem-info img{max-width:40%;max-height:82px;object-fit:cover;float:right;margin:3px 0 7px 8px;border-radius:8px}
+.problem-info.what{grid-column:1;grid-row:2;background:var(--mint)}
+.problem-info.where{grid-column:1;grid-row:3;background:var(--cream)}
+.problem-info.why{grid-column:2/4;grid-row:2/4;background:var(--peach)}
+.problem-info.who{grid-column:4;grid-row:2;background:var(--mint)}
+.stats{grid-column:4;grid-row:3;background:#fff1e3;position:relative;padding:15px;display:flex;justify-content:space-around;align-items:center;gap:8px}
+.stats h2{position:absolute;top:4px;right:10px;font-family:'Permanent Marker',cursive;font-size:22px;background:#222;color:white;padding:4px 12px;transform:rotate(-3deg)}
+.stat{margin-top:25px;background:#f9c7c0;border:1px solid #6f4238;padding:10px 8px;text-align:center;transform:rotate(-5deg);font-family:'DM Serif Display',serif;font-size:12px;width:29%}
+.stat:nth-of-type(3){transform:rotate(4deg);background:#f5d4b6}
+/* INITIATIVES PAGE */
+.initiative-grid{
+ display:grid;
+ grid-template-columns:minmax(170px,1fr) minmax(0,2.5fr) minmax(150px,1fr);
+ grid-template-rows:minmax(220px,27vw) auto auto;
+ gap:3px;
+ background:var(--line);
+}
+.programs{
+ grid-column:1;
+ grid-row:1/3;
+ padding:18px 12px;
+ background:#f6d3bd;
+}
+.program-card{
+ display:block;
+ background:#fff0df;
+ border:1.5px solid #9a654a;
+ border-radius:20px 20px 20px 3px;
+ padding:12px;
+ margin:12px 0;
+ box-shadow:3px 3px #bc9477;
+}
+.program-card h3{
+ font-family:'DM Serif Display',serif;
+ margin:0 0 6px;
+ font-size:17px;
+}
+.program-card p{
+ font-size:12px;
+ line-height:1.45;
+ margin:0 0 8px;
+}
+.program-card a{
+ font-size:12px;
+ font-weight:bold;
+ color:#175b31;
+}
+.initiative-hero{
+ grid-column:2;
+ grid-row:1;
+ position:relative;
+ overflow:hidden;
+ display:grid;
+ place-items:center;
+ background:#47734a;
+}
+.initiative-hero img{
+ position:absolute;
+ width:100%;
+ height:100%;
+ object-fit:cover;
+}
+.initiative-hero:after{
+ content:"";
+ position:absolute;
+ inset:0;
+ background:#0004;
+}
+.quick-links{
+ grid-column:3;
+ grid-row:1;
+ padding:16px;
+ background:var(--mint);
+}
+.quick-links h2,.habit-panel h2,.initiative-more h2{
+ font-family:'Permanent Marker',cursive;
+ font-size:22px;
+ margin:0 0 12px;
+}
+.quick-links a{
+ display:block;
+ background:#fff4e5;
+ border:1px solid #a1b8a2;
+ padding:10px;
+ margin:8px 0;
+ border-radius:12px;
+ font-size:12px;
+ font-weight:bold;
+}
+.habit-panel{
+ grid-column:2;
+ grid-row:2;
+ background:#fce6d5;
+ padding:16px;
+}
+.habit-clouds{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;
+}
+.habit{
+ min-height:105px;
+ padding:13px 8px;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ text-align:center;
+ border-radius:48% 52% 42% 58%/55% 40% 60% 45%;
+ background:var(--pink);
+}
+.habit:nth-child(2),.habit:nth-child(5){background:#ffcf9f}
+.habit:nth-child(3),.habit:nth-child(6){background:#c9edce}
+.habit strong{
+ font-family:'Permanent Marker',cursive;
+ font-size:17px;
+}
+.habit span{
+ font-size:11px;
+ line-height:1.3;
+ margin-top:5px;
+}
+.initiative-more{
+ grid-column:3;
+ grid-row:2;
+ padding:16px;
+ background:#f8d2c3;
+ font-size:13px;
+ line-height:1.55;
+}
+.initiative-bottom{
+ grid-column:1/-1;
+ padding:20px;
+ background:#fff0df;
+ line-height:1.6;
+}
+.initiative-bottom h2{
+ font-family:'DM Serif Display',serif;
+ font-size:25px;
+}
+.resource-link{
+ display:inline-block;
+ margin:5px;
+ padding:9px 13px;
+ border:1px solid #285e37;
+ border-radius:18px;
+ background:#e2f3df;
+ color:#17472b;
+ font-size:12px;
+ font-weight:bold;
+}
+
+/* ART TUTORIALS */
+.tutorial-grid{
+ display:grid;
+ grid-template-columns:minmax(155px,1fr) minmax(0,2.5fr) minmax(160px,1fr);
+ grid-template-rows:minmax(220px,27vw) auto auto;
+ gap:3px;
+ background:var(--line);
+}
+.tutorial-quote{
+ grid-column:1;
+ grid-row:1;
+ background:var(--mint);
+ padding:20px 14px;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ text-align:center;
+}
+.tutorial-quote blockquote{
+ font-family:'DM Serif Display',serif;
+ font-size:clamp(18px,2vw,27px);
+ line-height:1.25;
+ margin:10px 0;
+}
+.tutorial-quote cite{
+ font-size:11px;
+}
+.tutorial-hero{
+ grid-column:2;
+ grid-row:1;
+ position:relative;
+ display:grid;
+ place-items:center;
+ overflow:hidden;
+ background:#476a4a;
+}
+.tutorial-hero img{
+ position:absolute;
+ inset:0;
+ width:100%;
+ height:100%;
+ object-fit:cover;
+}
+.tutorial-hero:after{
+ content:"";
+ position:absolute;
+ inset:0;
+ background:#0005;
+}
+.tutorial-side{
+ grid-column:3;
+ grid-row:1;
+ padding:17px;
+ background:#f5d2bd;
+ font-size:13px;
+ line-height:1.5;
+}
+.popular-tutorials{
+ grid-column:1/3;
+ grid-row:2;
+ padding:16px;
+ background:#f8dfca;
+}
+.popular-tutorials>h2{
+ font-family:'Permanent Marker',cursive;
+ font-size:26px;
+ margin:0 0 12px;
+}
+.tutorial-cards{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:12px;
+}
+.tutorial-card{
+ background:#fff4e5;
+ border:1.5px solid #b98b70;
+ border-radius:16px;
+ overflow:hidden;
+ box-shadow:3px 3px #c4a18a;
+}
+.tutorial-card img{
+ width:100%;
+ height:clamp(85px,10vw,135px);
+ object-fit:cover;
+ display:block;
+}
+.tutorial-card-content{
+ padding:10px;
+}
+.tutorial-card h3{
+ font-family:'DM Serif Display',serif;
+ font-size:16px;
+ line-height:1.15;
+ margin:0 0 7px;
+}
+.tutorial-card p{
+ font-size:11px;
+ line-height:1.4;
+}
+.tutorial-card a{
+ font-size:11px;
+ font-weight:bold;
+ color:#175b31;
+}
+.more-panel{
+ grid-column:3;
+ grid-row:2;
+ padding:16px;
+ background:#dff3df;
+ font-size:13px;
+ line-height:1.5;
+}
+.tutorial-details{
+ grid-column:1/-1;
+ padding:20px;
+ background:#fff0df;
+}
+.tutorial-details h2{
+ font-family:'DM Serif Display',serif;
+ font-size:27px;
+}
+.detail-grid{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:14px;
+}
+.detail-card{
+ padding:15px;
+ background:#f5d6c1;
+ border-radius:16px;
+ border:1px solid #bc937d;
+}
+.detail-card h3{
+ font-family:'DM Serif Display',serif;
+ margin:0 0 8px;
+}
+.detail-card p,.detail-card li{
+ font-size:13px;
+ line-height:1.55;
+}
+
+/* ADDITIONAL INFORMATION PAGES */
+.standard-page{
+ padding:clamp(18px,4vw,50px);
+ background:var(--cream);
+ min-height:70vh;
+}
+.page-heading{
+ font-family:'League Spartan',sans-serif;
+ font-size:clamp(35px,5vw,68px);
+ margin:0 0 10px;
+ color:var(--forest);
+}
+.page-intro{
+ max-width:800px;
+ line-height:1.7;
+}
+.info-grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:16px;
+ margin-top:25px;
+}
+.info-card{
+ padding:20px;
+ border:1.5px solid #987b68;
+ border-radius:16px;
+ background:#fff8ed;
+}
+.info-card h2{
+ font-family:'DM Serif Display',serif;
+ margin-top:0;
+}
+.info-card p,.info-card li{
+ font-size:14px;
+ line-height:1.6;
+}
+.info-card a{
+ color:#175b31;
+ font-weight:bold;
+}
+.chat-note{
+ background:#e3f5e2;
+ border:1px solid #7da780;
+ border-radius:12px;
+ padding:14px;
+ line-height:1.5;
+}
+.chat-box{
+ max-width:750px;
+ border:2px solid var(--forest);
+ border-radius:15px;
+ overflow:hidden;
+ background:white;
+ margin-top:20px;
+}
+.chat-messages{
+ min-height:180px;
+ max-height:350px;
+ overflow-y:auto;
+ padding:15px;
+}
+.chat-message{
+ background:#e3f5e2;
+ border-radius:12px;
+ padding:10px;
+ margin:8px 0;
+ overflow-wrap:anywhere;
+}
+.chat-form{
+ display:flex;
+ gap:8px;
+ padding:12px;
+ border-top:1px solid #ccc;
+}
+.chat-form input{
+ flex:1;
+ min-width:0;
+ padding:10px;
+ border:1px solid #aaa;
+ border-radius:8px;
+}
+.primary-button{
+ border:0;
+ background:var(--forest);
+ color:white;
+ border-radius:8px;
+ padding:10px 16px;
+ font-weight:bold;
+}
+.primary-button:hover{background:#0b7032}
+.site-footer{
+ background:var(--deep);
+ color:#fff1df;
+ padding:20px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:15px;
+ font-size:12px;
+}
+.site-footer a{margin-right:12px}
+.search-results{
+ display:none;
+ position:absolute;
+ top:28px;
+ left:0;
+ right:0;
+ max-height:320px;
+ overflow-y:auto;
+ background:#fff8ed;
+ border:1px solid #333;
+ color:#222;
+ box-shadow:0 4px 8px #0003;
+ z-index:40;
+}
+.search-results.show{display:block}
+.search-results a{
+ display:block;
+ padding:9px 10px;
+ text-decoration:none;
+ border-bottom:1px solid #e0d4c5;
+ font-size:12px;
+}
+.search-results a:hover{background:#f5d0b0}
+@media(max-width:760px){
+ .site-header{height:auto;min-height:48px;flex-wrap:wrap;position:relative}
+ .nav{order:3;flex-basis:100%;overflow-x:auto;justify-content:flex-start;padding:6px 2px}
+ .search-wrap{margin-left:auto}
+ .home-grid{grid-template-columns:1fr;grid-template-rows:220px auto auto}
+ .updates-panel{grid-column:1;grid-row:auto;min-height:130px}
+ .home-lower{grid-column:1;grid-template-columns:1fr}
+ .quote-panel{min-height:190px}
+ .problem-grid{grid-template-columns:1fr 1fr;grid-template-rows:180px auto auto auto auto}
+ .problem-banner{grid-column:1/3;grid-row:1}
+ .problem-info.what{grid-column:1;grid-row:2}
+ .problem-info.where{grid-column:2;grid-row:2}
+ .problem-info.why{grid-column:1/3;grid-row:3}
+ .problem-info.who{grid-column:1;grid-row:4}
+ .stats{grid-column:2;grid-row:4;min-height:150px}
+ .initiative-grid,.tutorial-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+ .programs{grid-column:1;grid-row:1/3}
+ .initiative-hero{grid-column:2;grid-row:1;min-height:200px}
+ .quick-links{grid-column:2;grid-row:2}
+ .habit-panel{grid-column:1/3;grid-row:3}
+ .initiative-more{grid-column:1/3;grid-row:4}
+ .initiative-bottom{grid-column:1/3;grid-row:5}
+ .tutorial-quote{grid-column:1;grid-row:1;min-height:180px}
+ .tutorial-hero{grid-column:2;grid-row:1;min-height:180px}
+ .tutorial-side{grid-column:1/3;grid-row:2}
+ .popular-tutorials{grid-column:1/3;grid-row:3}
+ .more-panel{grid-column:1/3;grid-row:4}
+ .tutorial-details{grid-column:1/3;grid-row:5}
+ .tutorial-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .detail-grid,.info-grid{grid-template-columns:1fr}
+}
+@media(max-width:430px){
+ .hero h1{font-size:38px}
+ .problem-grid{grid-template-columns:1fr;grid-template-rows:auto}
+ .problem-banner,.problem-info.what,.problem-info.where,.problem-info.why,.problem-info.who,.stats{grid-column:1;grid-row:auto;min-height:140px}
+ .problem-banner{min-height:180px}
+ .habit-clouds{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .tutorial-cards{grid-template-columns:1fr 1fr;gap:8px}
+ .tutorial-card h3{font-size:14px}
+ .tutorial-card-content{padding:7px}
+ .stat{width:30%}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="#home" class="logo" onclick="showPage('home');return false">
+    <span class="logo-mark">🌿</span>
+    <span>TerraCraft</span>
+  </a>
+
+  <nav class="nav">
+    <a href="#home" onclick="showPage('home');return false">HOME</a>
+    <a href="#problem" onclick="showPage('problem');return false">THE PROBLEM</a>
+    <a href="#initiatives" onclick="showPage('initiatives');return false">INITIATIVES</a>
+    <a href="#tutorials" onclick="showPage('tutorials');return false">TUTORIALS</a>
+    <a href="#chat" onclick="showPage('chat');return false">CHAT</a>
+  </nav>
+
+  <div class="search-wrap">
+    <input id="siteSearch" type="search" placeholder="Search TerraCraft..." aria-label="Search website">
+    <button onclick="runSearch()" aria-label="Search">⌕</button>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+
+  <button class="icon-btn" onclick="showPage('resources')" title="Resources">♧</button>
+
+  <div class="user-menu">
+    <button onclick="toggleDropdown()" aria-expanded="false" id="userButton">
+      <span class="avatar">🌱</span>
+      <span>Guest<br>⌄</span>
+    </button>
+    <div class="dropdown" id="userDropdown">
+      <a href="#resources" onclick="showPage('resources');closeDropdown();return false">♻ Recycling resources</a>
+      <a href="#contact" onclick="showPage('contact');closeDropdown();return false">✉ Contact us</a>
+      <a href="#privacy" onclick="showPage('privacy');closeDropdown();return false">🔒 Privacy & safety</a>
+      <a href="#home" onclick="showPage('home');closeDropdown();return false">⌂ Back to home</a>
+    </div>
+  </div>
+</header>
+
+<!-- HOME PAGE -->
+<main id="home" class="page active">
+  <div class="home-grid">
+
+    <section class="hero">
+      <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=85" alt="Sunlight filtering through a green forest">
+      <h1>TERRACRAFT</h1>
+    </section>
+
+    <aside class="updates-panel">
+      <span class="updates-label">DID YOU KNOW?</span>
+      <ul>
+        <li>Your waste can become someone else's resource.</li>
+        <li>Sorting waste makes recycling easier.</li>
+        <li>Small daily choices can reduce what goes to landfill.</li>
+      </ul>
+      <div class="geo-shape"></div>
+    </aside>
+
+    <section class="home-lower">
+      <div class="content-strip">
+        <span class="section-pill">THE PROBLEM</span>
+        <div class="cards3">
+          <article class="mini-card">
+            <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=400&q=80" alt="Waste ready for sorting">
+            <h3>Waste overload</h3>
+            <a href="#problem" onclick="showPage('problem');return false">Explore the issue ↗</a>
+          </article>
+          <article class="mini-card">
+            <img src="https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?auto=format&fit=crop&w=400&q=80" alt="Recycling materials">
+            <h3>Our impact</h3>
+            <a href="#problem" onclick="showPage('problem');return false">Learn why it matters ↗</a>
+          </article>
+          <article class="mini-card">
+            <img src="https://images.unsplash.com/photo-1528323273322-d81458248d40?auto=format&fit=crop&w=400&q=80" alt="Green plants growing">
+            <h3>Better choices</h3>
+            <a href="#initiatives" onclick="showPage('initiatives');return false">Find solutions ↗</a>
+          </article>
+        </div>
+      </div>
+
+      <div class="content-strip tutorials">
+        <span class="section-pill">ART TUTORIALS</span>
+        <div class="cards3">
+          <article class="mini-card">
+            <img src="https://images.unsplash.com/photo-1490312278390-ab64016e0aa9?auto=format&fit=crop&w=400&q=80" alt="Creative handmade craft">
+            <h3>DIY creations</h3>
+            <a href="#tutorials" onclick="showPage('tutorials');return false">Make something new ↗</a>
+          </article>
+          <article class="mini-card">
+            <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=400&q=80" alt="Art materials and paints">
+            <h3>Scrap to art</h3>
+            <a href="#tutorials" onclick="showPage('tutorials');return false">Explore ideas ↗</a>
+          </article>
+          <article class="mini-card">
+            <img src="https://images.unsplash.com/photo-1452860606245-08befc0ff44b?auto=format&fit=crop&w=400&q=80" alt="Creative work in progress">
+            <h3>Easy projects</h3>
+            <a href="#tutorials" onclick="showPage('tutorials');return false">Start crafting ↗</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <aside class="quote-panel">
+      <span class="eyebrow">A LITTLE INSPIRATION</span>
+      <blockquote>“The greatest threat to our planet is the belief that someone else will save it.”</blockquote>
+      <p><small>Commonly attributed to Robert Swan</small></p>
+      <a href="https://www.robertswan.com/" target="_blank" rel="noopener">Explore environmental action ↗</a>
+      <div class="quote-hills"></div>
+    </aside>
+  </div>
+</main>
+
+<!-- THE PROBLEM PAGE -->
+<section id="problem" class="page">
+  <div class="problem-grid">
+
+    <div class="problem-banner">
+      <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1200&q=85" alt="Waste and recyclable materials">
+      <h1>THE PROBLEM</h1>
+    </div>
+
+    <article class="problem-info what">
+      <h2>What is it?</h2>
+      <img src="https://images.unsplash.com/photo-1604187351574-c75ca79f5807?auto=format&fit=crop&w=300&q=80" alt="Materials collected for recycling">
+      <p>Household waste includes food scraps, packaging, paper, plastics, glass and other items thrown away during everyday life.</p>
+      <p>When different kinds of waste are mixed together, useful materials can become difficult to recover.</p>
+    </article>
+
+    <article class="problem-info where">
+      <h2>Where is it?</h2>
+      <p>Waste problems can be found in homes, streets, overflowing bins, landfills, waterways and public spaces.</p>
+      <p>Inadequate collection and disposal systems can make the problem worse.</p>
+    </article>
+
+    <article class="problem-info why">
+      <h2>Why & how does it occur?</h2>
+      <img src="https://images.unsplash.com/photo-1605600659873-d808a13e4d9a?auto=format&fit=crop&w=400&q=80" alt="Discarded waste">
+      <p>Household waste increases when people buy more than they need, use disposable products, throw away repairable items and fail to separate waste correctly.</p>
+      <p>Food waste, contaminated recyclables and mixed materials can make recovery more difficult. Some waste is sent to landfills, while poorly managed waste can pollute the surrounding environment.</p>
+      <p><strong>What can help?</strong> Buy thoughtfully, reuse what you already own, separate waste at home, compost suitable organic waste and follow local disposal rules.</p>
+    </article>
+
+    <article class="problem-info who">
+      <h2>Who is it affecting?</h2>
+      <p>Waste pollution affects communities, sanitation workers, wildlife, ecosystems and future generations.</p>
+      <p>Communities near poorly managed disposal sites may face additional environmental and health risks.</p>
+    </article>
+
+    <aside class="stats">
+      <h2>THE FACTS</h2>
+      <div class="stat"><strong>REDUCE</strong><br>Buy only what you need.</div>
+      <div class="stat"><strong>REUSE</strong><br>Give useful items another life.</div>
+      <div class="stat"><strong>SORT</strong><br>Separate waste correctly.</div>
+    </aside>
+  </div>
+</section>
+<!-- INITIATIVES PAGE -->
+<section id="initiatives" class="page">
+  <div class="initiative-grid">
+
+    <aside class="programs">
+      <h2>OUR PROGRAMS</h2>
+      <p>Small actions. Real change.</p>
+
+      <article class="program-card">
+        <h3>♻ Waste Wise</h3>
+        <p>Learn to separate wet, dry and hazardous household waste according to your local rules.</p>
+        <a href="https://swachhbharatmission.ddws.gov.in/" target="_blank" rel="noopener">Explore the campaign ↗</a>
+      </article>
+
+      <article class="program-card">
+        <h3>🌱 Compost Corner</h3>
+        <p>Discover how suitable fruit and vegetable scraps can become compost instead of being discarded.</p>
+        <a href="https://www.epa.gov/recycle/composting-home" target="_blank" rel="noopener">Learn about composting ↗</a>
+      </article>
+
+      <article class="program-card">
+        <h3>🧵 Repair & Rewear</h3>
+        <p>Repair, exchange, donate or creatively reuse clothes and other items before replacing them.</p>
+        <a href="https://www.unep.org/" target="_blank" rel="noopener">Explore sustainability ↗</a>
+      </article>
+
+      <article class="program-card">
+        <h3>🎨 Scrap to Art</h3>
+        <p>Turn clean packaging, cardboard and paper scraps into useful or decorative creations.</p>
+        <a href="#tutorials" onclick="showPage('tutorials');return false">Try a tutorial ↗</a>
+      </article>
+    </aside>
+
+    <section class="initiative-hero">
+      <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=85"
+           alt="Green plants representing environmental action">
+      <h1>BE THE CHANGE</h1>
+    </section>
+
+    <aside class="quick-links">
+      <h2>QUICK START</h2>
+      <p>Not sure where to begin? Start with one small change.</p>
+      <a href="https://www.epa.gov/recycle" target="_blank" rel="noopener">♻ Recycling basics ↗</a>
+      <a href="https://www.epa.gov/recycle/composting-home" target="_blank" rel="noopener">🌱 Home composting ↗</a>
+      <a href="https://www.unep.org/" target="_blank" rel="noopener">🌍 Global environment action ↗</a>
+      <a href="#tutorials" onclick="showPage('tutorials');return false">🎨 Make art from scraps ↗</a>
+    </aside>
+
+    <section class="habit-panel">
+      <h2>CHANGES IN DAILY HABITS</h2>
+      <p>You don't have to change everything at once. Pick one habit and practise it every day!</p>
+
+      <div class="habit-clouds">
+        <div class="habit">
+          <strong>REFUSE!</strong>
+          <span>Skip things you don't need.</span>
+        </div>
+        <div class="habit">
+          <strong>REUSE IT</strong>
+          <span>Bring your own reusable bag or bottle.</span>
+        </div>
+        <div class="habit">
+          <strong>SORT IT</strong>
+          <span>Separate waste using local guidelines.</span>
+        </div>
+        <div class="habit">
+          <strong>REPAIR</strong>
+          <span>Fix an item before replacing it.</span>
+        </div>
+        <div class="habit">
+          <strong>THINK FIRST</strong>
+          <span>Choose products with less packaging.</span>
+        </div>
+        <div class="habit">
+          <strong>COMPOST</strong>
+          <span>Compost suitable food scraps safely.</span>
+        </div>
+      </div>
+    </section>
+
+    <aside class="initiative-more">
+      <h2>MORE THAN RECYCLING</h2>
+      <p>Recycling matters, but preventing waste in the first place can be even better.</p>
+      <p>Try borrowing instead of buying, sharing things you rarely use, repairing broken objects and planning meals to reduce food waste.</p>
+      <p>Remember: only put materials in recycling bins that your local collection system accepts.</p>
+      <a href="https://www.unep.org/" target="_blank" rel="noopener">Discover more ideas ↗</a>
+    </aside>
+
+    <section class="initiative-bottom">
+      <h2>MAKE YOUR NEXT MOVE</h2>
+      <p>Choose a program, involve your family or friends, and set a realistic goal for the week. You could sort household waste correctly, reuse a container or create something from clean scrap materials.</p>
+      <a class="resource-link" href="#problem" onclick="showPage('problem');return false">Understand the problem</a>
+      <a class="resource-link" href="#tutorials" onclick="showPage('tutorials');return false">Explore DIY tutorials</a>
+      <a class="resource-link" href="#chat" onclick="showPage('chat');return false">Share an idea</a>
+    </section>
+
+  </div>
+</section>
+<!-- ART TUTORIALS PAGE -->
+<section id="tutorials" class="page">
+  <div class="tutorial-grid">
+
+    <aside class="tutorial-quote">
+      <span class="eyebrow">CREATE • REUSE • REIMAGINE</span>
+      <blockquote>“Have nothing in your houses that you do not know to be useful or believe to be beautiful.”</blockquote>
+      <cite>— William Morris</cite>
+      <a href="https://www.vam.ac.uk/" target="_blank" rel="noopener">Discover art and design ↗</a>
+    </aside>
+
+    <section class="tutorial-hero">
+      <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=1200&q=85"
+           alt="Colourful art supplies ready for a creative project">
+      <h1>ART FROM SCRAPS</h1>
+    </section>
+
+    <aside class="tutorial-side">
+      <h2>MAKE IT YOURS</h2>
+      <p>Old packaging, paper scraps and empty containers can become something useful or beautiful.</p>
+      <p>These projects focus on materials you already have, rather than buying new craft supplies.</p>
+      <p><strong>Before you begin:</strong> Clean and dry reusable materials. Ask an adult for help with scissors, craft knives, hot glue or any sharp tools.</p>
+      <a href="https://www.youtube.com/results?search_query=recycled+materials+DIY+crafts+for+beginners" target="_blank" rel="noopener">Find more craft videos ↗</a>
+    </aside>
+
+    <section class="popular-tutorials">
+      <h2>POPULAR TUTORIALS</h2>
+      <div class="tutorial-cards">
+
+        <article class="tutorial-card">
+          <img src="https://images.unsplash.com/photo-1490312278390-ab64016e0aa9?auto=format&fit=crop&w=500&q=80"
+               alt="Handmade craft inspiration">
+          <div class="tutorial-card-content">
+            <h3>Bottle Planter</h3>
+            <p>Reuse a clean plastic bottle to make a small planter for suitable plants.</p>
+            <a href="https://www.youtube.com/results?search_query=DIY+plastic+bottle+planter+recycled+materials" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+          </div>
+        </article>
+
+        <article class="tutorial-card">
+          <img src="https://images.unsplash.com/photo-1452860606245-08befc0ff44b?auto=format&fit=crop&w=500&q=80"
+               alt="Creative project materials">
+          <div class="tutorial-card-content">
+            <h3>Cardboard Organiser</h3>
+            <p>Turn clean cardboard packaging into compartments for stationery.</p>
+            <a href="https://www.youtube.com/results?search_query=DIY+cardboard+desk+organizer+recycled" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+          </div>
+        </article>
+
+        <article class="tutorial-card">
+          <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=500&q=80"
+               alt="Paints and art supplies">
+          <div class="tutorial-card-content">
+            <h3>Scrap Paper Art</h3>
+            <p>Combine magazine pages and leftover paper into a collage.</p>
+            <a href="https://www.youtube.com/results?search_query=recycled+paper+collage+art+for+beginners" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+          </div>
+        </article>
+
+        <article class="tutorial-card">
+          <img src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=500&q=80"
+               alt="Decorative objects for the home">
+          <div class="tutorial-card-content">
+            <h3>Jar Makeover</h3>
+            <p>Decorate a clean, undamaged jar as a desk organiser or holder.</p>
+            <a href="https://www.youtube.com/results?search_query=recycled+glass+jar+decorating+DIY" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <aside class="more-panel">
+      <h2>MORE IDEAS</h2>
+      <p><strong>Paper:</strong> Make gift tags, bookmarks or paper mosaics from clean scraps.</p>
+      <p><strong>Packaging:</strong> Reuse sturdy boxes to organise drawers.</p>
+      <p><strong>Fabric:</strong> Turn old, clean fabric into simple decorations or reusable cloths.</p>
+      <p><strong>Containers:</strong> Reuse suitable containers for storage after cleaning them.</p>
+      <a href="https://www.youtube.com/results?search_query=upcycling+household+waste+DIY+crafts" target="_blank" rel="noopener">Explore more projects ↗</a>
+    </aside>
+
+    <section class="tutorial-details">
+      <h2>YOUR MINI CRAFT GUIDE</h2>
+      <p>Every project starts with something you might otherwise throw away. Choose clean, safe materials and adapt the design to what you have at home.</p>
+
+      <div class="detail-grid">
+        <article class="detail-card">
+          <h3>01 · Bottle Planter</h3>
+          <p><strong>Materials:</strong> A clean plastic bottle, soil, suitable seeds or a small plant, and water.</p>
+          <p><strong>Steps:</strong> Plan the container, ask an adult to help prepare any openings, add suitable growing material, then care for the plant.</p>
+          <p><strong>Why reuse it?</strong> It gives a discarded container another purpose.</p>
+        </article>
+
+        <article class="detail-card">
+          <h3>02 · Cardboard Organiser</h3>
+          <p><strong>Materials:</strong> Clean cardboard, a ruler, pencil, glue and decorative paper scraps.</p>
+          <p><strong>Steps:</strong> Sketch compartments, ask an adult to help cut pieces if needed, assemble the organiser and decorate it.</p>
+          <p><strong>Why reuse it?</strong> It turns packaging into useful storage.</p>
+        </article>
+
+        <article class="detail-card">
+          <h3>03 · Scrap Paper Collage</h3>
+          <p><strong>Materials:</strong> Used paper, old magazines, a backing sheet and non-toxic glue.</p>
+          <p><strong>Steps:</strong> Plan a picture, arrange the scraps, glue them down and let the work dry.</p>
+          <p><strong>Why reuse it?</strong> It makes creative use of paper that is no longer needed.</p>
+        </article>
+      </div>
+
+      <div class="chat-note" style="margin-top:18px">
+        <strong>Safety first!</strong> Use clean materials only. Have an adult supervise cutting, heated tools and any work involving sharp edges. Do not reuse chemical containers, damaged glass or packaging that held hazardous substances. Wash your hands after crafting.
+      </div>
+    </section>
+
+  </div>
+</section>
+<!-- ANONYMOUS CHAT PAGE -->
+<section id="chat" class="page">
+  <div class="standard-page">
+    <h1 class="page-heading">THE GREEN CORNER</h1>
+    <p class="page-intro">Share ideas, ask questions and discuss ways to reduce household waste. Be kind, stay safe and help others learn.</p>
+
+    <div class="chat-note">
+      <strong>Privacy reminder:</strong> Use an anonymous nickname. Do not share your full name, address, school, phone number, passwords or personal photos. This is a local demonstration: messages stay in this browser session and are not sent to a live community.
+    </div>
+
+    <div class="chat-box">
+      <div class="chat-messages" id="chatMessages" aria-live="polite">
+        <div class="chat-message"><strong>LeafLearner:</strong> What are some easy ways to reduce packaging at home?</div>
+        <div class="chat-message"><strong>EcoExplorer:</strong> Reusable bags and buying only what you need are good starting points!</div>
+        <div class="chat-message"><strong>PlantPal:</strong> I want to try making art from cardboard scraps.</div>
+      </div>
+      <form class="chat-form" id="chatForm">
+        <input id="nickname" maxlength="20" placeholder="Anonymous nickname" aria-label="Anonymous nickname" required>
+        <input id="chatInput" maxlength="300" placeholder="Share a helpful idea..." aria-label="Message" required>
+        <button class="primary-button" type="submit">Send</button>
+      </form>
+    </div>
+    <p><small>Please keep messages respectful and avoid sharing personal information. Refreshing this page clears demonstration messages you have added.</small></p>
+  </div>
+</section>
+
+<!-- RECYCLING RESOURCES AND LAWS -->
+<section id="resources" class="page">
+  <div class="standard-page">
+    <h1 class="page-heading">KNOW THE RULES</h1>
+    <p class="page-intro">Recycling rules differ between countries and even between cities. Check official guidance before putting an item in a recycling bin.</p>
+
+    <div class="info-grid">
+      <article class="info-card">
+        <h2>🇮🇳 India</h2>
+        <p>India's Solid Waste Management Rules, 2016 established a framework for waste segregation, collection and management. Check current national and local requirements, including any updated rules and municipal instructions.</p>
+        <a href="https://moef.gov.in/" target="_blank" rel="noopener">Ministry of Environment, Forest and Climate Change ↗</a>
+        <br><br>
+        <a href="https://swachhbharatmission.ddws.gov.in/" target="_blank" rel="noopener">Swachh Bharat Mission ↗</a>
+      </article>
+
+      <article class="info-card">
+        <h2>🇺🇸 United States</h2>
+        <p>Recycling acceptance varies by local authority and waste collection provider. Some communities accept certain plastics and paper products, while others do not.</p>
+        <a href="https://www.epa.gov/recycle" target="_blank" rel="noopener">US EPA recycling guidance ↗</a>
+      </article>
+
+      <article class="info-card">
+        <h2>🇬🇧 United Kingdom</h2>
+        <p>Household collection instructions can vary by local council. Check your council's guidance for packaging, food waste, glass and other household materials.</p>
+        <a href="https://www.gov.uk/" target="_blank" rel="noopener">UK government information ↗</a>
+      </article>
+
+      <article class="info-card">
+        <h2>🇪🇺 European Union</h2>
+        <p>The EU has waste and circular-economy legislation, while national systems and local collection arrangements determine how households separate many materials.</p>
+        <a href="https://environment.ec.europa.eu/topics/waste-and-recycling_en" target="_blank" rel="noopener">European Commission: waste and recycling ↗</a>
+      </article>
+
+      <article class="info-card">
+        <h2>🇦🇺 Australia</h2>
+        <p>Waste collection arrangements differ across states, territories and councils. Local guidance is important for knowing what belongs in each bin.</p>
+        <a href="https://www.dcceew.gov.au/environment/protection/waste" target="_blank" rel="noopener">Australian government waste information ↗</a>
+      </article>
+
+      <article class="info-card">
+        <h2>🌍 General recycling tips</h2>
+        <ul>
+          <li>Separate materials according to local instructions.</li>
+          <li>Keep recyclable items free from food residue where required.</li>
+          <li>Never place batteries, chemicals or electronic waste in ordinary recycling bins unless specifically instructed.</li>
+          <li>Reuse and repair items before discarding them.</li>
+        </ul>
+        <a href="https://www.unep.org/" target="_blank" rel="noopener">United Nations Environment Programme ↗</a>
+      </article>
+    </div>
+
+    <div class="chat-note" style="margin-top:22px">
+      <strong>Important:</strong> This page provides introductory information, not legal advice. Laws can change, so consult the official government source and local waste authority for current requirements.
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT PAGE -->
+<section id="contact" class="page">
+  <div class="standard-page">
+    <h1 class="page-heading">LET'S CONNECT</h1>
+    <p class="page-intro">Have an idea for a new tutorial, a suggestion for TerraCraft or feedback about this website? Use the form below to prepare a message.</p>
+
+    <div class="info-grid">
+      <article class="info-card">
+        <h2>Send a suggestion</h2>
+        <form id="contactForm">
+          <label for="contactTopic">Topic</label><br>
+          <select id="contactTopic" style="width:100%;padding:10px;margin:8px 0 14px">
+            <option>New recycling idea</option>
+            <option>Art tutorial suggestion</option>
+            <option>Website feedback</option>
+            <option>Other suggestion</option>
+          </select>
+
+          <label for="contactMessage">Your message</label>
+          <textarea id="contactMessage" maxlength="1000" required rows="5" placeholder="Write your suggestion here..." style="width:100%;padding:10px;margin:8px 0 14px;resize:vertical"></textarea>
+
+          <button class="primary-button" type="submit">Prepare message</button>
+          <p id="contactStatus" aria-live="polite"></p>
+        </form>
+        <p><small>This demonstration does not send messages to a server or collect your contact details.</small></p>
+      </article>
+
+      <article class="info-card">
+        <h2>What TerraCraft stands for</h2>
+        <p><strong>Reduce:</strong> Prevent waste before it is created.</p>
+        <p><strong>Reuse:</strong> Find another purpose for things you already own.</p>
+        <p><strong>Recycle:</strong> Separate accepted materials correctly.</p>
+        <p><strong>Reimagine:</strong> Explore creative ways to use clean scraps.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY AND SAFETY PAGE -->
+<section id="privacy" class="page">
+  <div class="standard-page">
+    <h1 class="page-heading">STAY SAFE, STAY GREEN</h1>
+    <p class="page-intro">TerraCraft is designed to encourage environmental awareness without requiring visitors to share personal information.</p>
+
+    <div class="info-grid">
+      <article class="info-card">
+        <h2>🔒 Privacy</h2>
+        <ul>
+          <li>The sample chat runs locally in the browser.</li>
+          <li>Use an anonymous nickname rather than your real identity.</li>
+          <li>Never post contact details or private information.</li>
+          <li>External links may have their own privacy policies.</li>
+        </ul>
+      </article>
+
+      <article class="info-card">
+        <h2>✂ Craft safety</h2>
+        <ul>
+          <li>Use clean, dry, safe household materials.</li>
+          <li>Ask an adult to supervise cutting and heated tools.</li>
+          <li>Avoid broken glass, chemical containers and hazardous waste.</li>
+          <li>Use non-toxic craft materials and wash your hands afterwards.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div>
+    <strong>🌿 TerraCraft</strong>
+    <p>Small changes. Greener futures.</p>
+  </div>
+  <div>
+    <a href="#home" onclick="showPage('home');return false">Home</a>
+    <a href="#resources" onclick="showPage('resources');return false">Resources</a>
+    <a href="#privacy" onclick="showPage('privacy');return false">Privacy & safety</a>
+    <a href="#contact" onclick="showPage('contact');return false">Contact</a>
+  </div>
+  <small>Educational demonstration website.</small>
+</footer>
+
+<script>
+/* PAGE NAVIGATION */
+function showPage(id) {
+  const target = document.getElementById(id);
+  if (!target || !target.classList.contains('page')) return;
+
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.remove('active');
+  });
+
+  target.classList.add('active');
+  closeDropdown();
+
+  const results = document.getElementById('searchResults');
+  if (results) results.classList.remove('show');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* USER DROPDOWN */
+function toggleDropdown() {
+  const dropdown = document.getElementById('userDropdown');
+  const button = document.getElementById('userButton');
+  const isOpen = dropdown.classList.toggle('open');
+  button.setAttribute('aria-expanded', String(isOpen));
+}
+
+function closeDropdown() {
+  const dropdown = document.getElementById('userDropdown');
+  const button = document.getElementById('userButton');
+
+  if (dropdown) dropdown.classList.remove('open');
+  if (button) button.setAttribute('aria-expanded', 'false');
+}
+
+document.addEventListener('click', function(event) {
+  const menu = document.querySelector('.user-menu');
+  if (menu && !menu.contains(event.target)) closeDropdown();
+});
+
+/* SEARCH ACROSS ALL PAGES */
+const searchItems = [
+  {title:'Home', page:'home', terms:'home terracraft forest introduction'},
+  {title:'The Problem', page:'problem', terms:'problem household waste rubbish trash landfill pollution impact'},
+  {title:'What is household waste?', page:'problem', terms:'what waste definition household garbage'},
+  {title:'Where waste occurs', page:'problem', terms:'where street homes landfill waterways'},
+  {title:'Why waste happens', page:'problem', terms:'why causes overconsumption packaging disposal'},
+  {title:'Who is affected?', page:'problem', terms:'who people communities wildlife animals sanitation'},
+  {title:'Waste Wise Program', page:'initiatives', terms:'waste wise segregation sorting recycling'},
+  {title:'Compost Corner Program', page:'initiatives', terms:'compost organic food scraps garden'},
+  {title:'Repair and Rewear Program', page:'initiatives', terms:'repair clothes fashion textile reuse'},
+  {title:'Scrap to Art Program', page:'initiatives', terms:'scrap art crafts cardboard paper upcycling'},
+  {title:'Daily Habits', page:'initiatives', terms:'habits refuse reuse reduce repair sort compost'},
+  {title:'Art Tutorials', page:'tutorials', terms:'tutorials crafts diy art creative'},
+  {title:'Bottle Planter', page:'tutorials', terms:'bottle planter plastic gardening youtube'},
+  {title:'Cardboard Organiser', page:'tutorials', terms:'cardboard organizer stationery storage'},
+  {title:'Scrap Paper Collage', page:'tutorials', terms:'paper collage magazines mosaic'},
+  {title:'Jar Makeover', page:'tutorials', terms:'jar decoration storage glass'},
+  {title:'Anonymous Chat', page:'chat', terms:'chat discussion community nickname ideas'},
+  {title:'Recycling Laws and Resources', page:'resources', terms:'laws rules regulations india usa uk europe australia'},
+  {title:'India Recycling Guidance', page:'resources', terms:'india indian solid waste rules swachh bharat'},
+  {title:'US Recycling Guidance', page:'resources', terms:'usa united states epa recycling'},
+  {title:'UK Recycling Guidance', page:'resources', terms:'uk united kingdom council recycling'},
+  {title:'EU Recycling Guidance', page:'resources', terms:'eu european union waste legislation'},
+  {title:'Australia Recycling Guidance', page:'resources', terms:'australia waste government recycling'},
+  {title:'Contact Us', page:'contact', terms:'contact feedback suggestion message'},
+  {title:'Privacy and Safety', page:'privacy', terms:'privacy anonymous personal information safe crafting sharp tools'}
+];
+
+function runSearch() {
+  const input = document.getElementById('siteSearch');
+  const results = document.getElementById('searchResults');
+  const query = input.value.trim().toLowerCase();
+
+  results.innerHTML = '';
+
+  if (!query) {
+    results.innerHTML = '<a href="#home">Type a word to search TerraCraft.</a>';
+    results.classList.add('show');
+    return;
+  }
+
+  const words = query.split(/\s+/);
+
+  const matches = searchItems.map(item => {
+    const text = (item.title + ' ' + item.terms + ' ' + item.page).toLowerCase();
+    let score = 0;
+
+    words.forEach(word => {
+      if (item.title.toLowerCase().includes(word)) score += 3;
+      if (item.terms.toLowerCase().includes(word)) score += 1;
+      if (item.page.includes(word)) score += 1;
+    });
+
+    return { ...item, score, text };
+  }).filter(item => item.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  if (!matches.length) {
+    results.innerHTML =
+      '<a href="#resources">No exact match. Try “recycling”, “crafts”, “compost”, “chat” or “privacy”.</a>';
+  } else {
+    matches.slice(0, 10).forEach(item => {
+      const link = document.createElement('a');
+      link.href = '#' + item.page;
+      link.textContent = item.title;
+      link.addEventListener('click', function(event) {
+        event.preventDefault();
+        showPage(item.page);
+      });
+      results.appendChild(link);
+    });
+  }
+
+  results.classList.add('show');
+}
+
+document.getElementById('siteSearch').addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') runSearch();
+});
+
+document.getElementById('siteSearch').addEventListener('input', function() {
+  if (this.value.trim()) runSearch();
+  else document.getElementById('searchResults').classList.remove('show');
+});
+
+document.addEventListener('click', function(event) {
+  const wrap = document.querySelector('.search-wrap');
+  if (wrap && !wrap.contains(event.target)) {
+    document.getElementById('searchResults').classList.remove('show');
+  }
+});
+
+/* ANONYMOUS LOCAL DEMO CHAT */
+document.getElementById('chatForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const nickname = document.getElementById('nickname').value.trim();
+  const message = document.getElementById('chatInput').value.trim();
+
+  if (!nickname || !message) return;
+
+  const container = document.getElementById('chatMessages');
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-message';
+
+  const name = document.createElement('strong');
+  name.textContent = nickname + ': ';
+
+  const content = document.createTextNode(message);
+
+  bubble.appendChild(name);
+  bubble.appendChild(content);
+  container.appendChild(bubble);
+  container.scrollTop = container.scrollHeight;
+
+  document.getElementById('chatInput').value = '';
+});
+
+/* CONTACT FORM DEMONSTRATION */
+document.getElementById('contactForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const topic = document.getElementById('contactTopic').value;
+  const message = document.getElementById('contactMessage').value.trim();
+  const status = document.getElementById('contactStatus');
+
+  if (!message) {
+    status.textContent = 'Please write a message first.';
+    return;
+  }
+
+  status.textContent =
+    'Your message is ready locally. Topic: ' + topic +
+    '. This demonstration does not send or store it.';
+});
+
+/* IMAGE FALLBACKS */
+document.querySelectorAll('img').forEach(function(img) {
+  img.addEventListener('error', function() {
+    if (!this.dataset.fallbackTried) {
+      this.dataset.fallbackTried = '1';
+      this.src =
+        'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80';
+    } else {
+      this.style.display = 'none';
+    }
+  });
+});
+
+/* ALLOW INTERNAL LINKS TO OPEN THE CORRECT PAGE */
+window.addEventListener('load', function() {
+  const id = window.location.hash.slice(1);
+  if (id && document.getElementById(id)?.classList.contains('page')) {
+    showPage(id);
+  }
+});
+</script>
+
+</body>
+</html>
